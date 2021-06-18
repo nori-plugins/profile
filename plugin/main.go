@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/nori-plugins/profile/internal/domain/service"
+	"gorm.io/gorm"
 
 	"github.com/nori-io/common/v5/pkg/domain/config"
 	em "github.com/nori-io/common/v5/pkg/domain/enum/meta"
@@ -12,6 +13,7 @@ import (
 	p "github.com/nori-io/common/v5/pkg/domain/plugin"
 	"github.com/nori-io/common/v5/pkg/domain/registry"
 	m "github.com/nori-io/common/v5/pkg/meta"
+	noriGorm "github.com/nori-io/interfaces/database/gorm"
 )
 
 func New() p.Plugin {
@@ -77,6 +79,31 @@ func (p *plugin) Stop(ctx context.Context, registry registry.Registry) error {
 }
 
 func (p plugin) Install(_ context.Context, registry registry.Registry) error {
+	db, err := noriGorm.GetGorm(registry)
+	if err != nil {
+		return err
+	}
+	//@todo actual sql code
+	err = db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(`CREATE TABLE profiles(
+	  	id bigserial PRIMARY KEY,
+		user_id bigint NOT NULL,
+		first_name  VARCHAR (25) NOT NULL,
+		last_name VARCHAR (25) NOT NULL,
+		nickname   VARCHAR (25) NOT NULL,
+		created_at TIMESTAMP,
+		updated_at TIMESTAMP
+			);
+		`).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
