@@ -43,7 +43,7 @@ func (p *plugin) Instance() interface{} {
 func (p *plugin) Meta() meta.Meta {
 	return m.Meta{
 		ID: m.ID{
-			ID:      "nori/profile/Profile",
+			ID:      "nori/profile.go/Profile",
 			Version: "0.1.0",
 		},
 		Author: m.Author{
@@ -66,7 +66,7 @@ func (p *plugin) Meta() meta.Meta {
 			Type: em.Git,
 			URL:  "github.com/nori-plugins/http",
 		},
-		Tags: []string{"nori", "profile"},
+		Tags: []string{"nori", "profile.go"},
 	}
 }
 
