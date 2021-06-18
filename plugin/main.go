@@ -20,19 +20,16 @@ func New() p.Plugin {
 
 type plugin struct {
 	instance service.ProfileService
-	/*	config conf
-		log    logger.FieldLogger*/
+	config   conf
+	log      logger.FieldLogger
 }
 
 type conf struct {
 }
 
 func (p *plugin) Init(ctx context.Context, config config.Config, log logger.FieldLogger) error {
-	/*p.config = conf{
-		host: config.String("host", "http server host"),
-		port: config.String("port", "http server port"),
-	}
-	p.log = log*/
+	p.config = conf{}
+	p.log = log
 
 	return nil
 }
@@ -72,9 +69,6 @@ func (p *plugin) Meta() meta.Meta {
 }
 
 func (p *plugin) Start(ctx context.Context, registry registry.Registry) error {
-	/*addr := fmt.Sprintf("%s:%s", p.config.host(), p.config.port())
-	p.log.Info(fmt.Sprintf("http addr %s", addr))
-	p.server = server.New(addr)*/
 	return nil
 }
 
