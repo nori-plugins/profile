@@ -108,5 +108,22 @@ func (p plugin) Install(_ context.Context, registry registry.Registry) error {
 }
 
 func (p plugin) UnInstall(_ context.Context, registry registry.Registry) error {
+	db, err := noriGorm.GetGorm(registry)
+	if err != nil {
+		return err
+	}
+
+	err = db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(`drop table profiles;
+		`).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
