@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 
+	config2 "github.com/nori-plugins/profile/internal/config"
+
 	"github.com/nori-plugins/profile/internal/domain/service"
 	"gorm.io/gorm"
 
@@ -22,16 +24,13 @@ func New() p.Plugin {
 
 type plugin struct {
 	instance service.ProfileService
-	config   conf
-	log      logger.FieldLogger
-}
-
-type conf struct {
+	config   config2.Config
+	logger   logger.FieldLogger
 }
 
 func (p *plugin) Init(ctx context.Context, config config.Config, log logger.FieldLogger) error {
-	p.config = conf{}
-	p.log = log
+	p.config = config2.Config{}
+	p.logger = log
 
 	return nil
 }
@@ -71,7 +70,10 @@ func (p *plugin) Meta() meta.Meta {
 }
 
 func (p *plugin) Start(ctx context.Context, registry registry.Registry) error {
-	return nil
+	config := p.config
+
+	_, err := Initialize(registry, config, p.logger)
+	return err
 }
 
 func (p *plugin) Stop(ctx context.Context, registry registry.Registry) error {
