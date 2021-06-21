@@ -49,3 +49,18 @@ func (h *Handler) GetProfileById(w http.ResponseWriter, r *http.Request) {
 
 	response.JSON(w, r, *profile)
 }
+
+func (h *Handler) PostProfile(w http.ResponseWriter, r *http.Request) {
+	data, err := newCreateProfileData(r)
+	if err != nil {
+		h.logger.Error("%s", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	if err = h.profileService.Create(r.Context(), data); err != nil {
+		h.logger.Error("%s", err)
+		//h.errorHelper.Error(w, err)
+	}
+
+	w.WriteHeader(http.StatusCreated)
+}
