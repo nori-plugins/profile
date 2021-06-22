@@ -15,7 +15,7 @@ import (
 
 var set = wire.NewSet(
 	noriGorm.GetGorm,
-	noriHttp.GetHttp)
+	noriHttp.GetRouter)
 
 func Initialize(registry registry.Registry, config config2.Config, logger logger.FieldLogger) (*httpHandler.Handler, error) {
 	wire.Build(app.AppSet, set)

@@ -22,7 +22,7 @@ import (
 // Injectors from wire.go:
 
 func Initialize(registry2 registry.Registry, config2 config.Config, logger2 logger.FieldLogger) (*http.Handler, error) {
-	httpHttp, err := http2.GetHttp(registry2)
+	router, err := http2.GetRouter(registry2)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func Initialize(registry2 registry.Registry, config2 config.Config, logger2 logg
 	}
 	handler := profile3.New(params2)
 	httpHandler := &http.Handler{
-		R:              httpHttp,
+		R:              router,
 		ProfileHandler: handler,
 	}
 	return httpHandler, nil
@@ -54,4 +54,4 @@ func Initialize(registry2 registry.Registry, config2 config.Config, logger2 logg
 
 // wire.go:
 
-var set = wire.NewSet(pg.GetGorm, http2.GetHttp)
+var set = wire.NewSet(pg.GetGorm, http2.GetRouter)
