@@ -27,18 +27,13 @@ func New(params Params) *Handler {
 	}
 
 	handler.R.Route("/profiles", func(r http.Router) {
-		r.Post("/", handler.ProfileHandler.PostProfile) // POST /profile
-
+		r.Post("/", handler.ProfileHandler.PostProfile) // POST /profiles
 		// Subrouters:
 		r.Route("/{id}", func(r http.Router) {
 			r.Use(StubCtx)
-			r.Get("/", handler.ProfileHandler.GetProfileById) // GET /profile/123
+			r.Get("/", handler.ProfileHandler.GetProfileById) // GET /profiles/123
 		})
 	})
-
-	// todo: add middleware
-	//handler.R.Get("/profiles/{id}", handler.ProfileHandler.GetProfileById)
-	//handler.R.Post("/profiles", handler.ProfileHandler.PostProfile)
 	return &handler
 }
 
